@@ -18,20 +18,20 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
 
         public IEnumerator DoSpawning()
         {
-            while (true)
+            //while (true)
             {
                 if (RougeBoyGame.S.Grid.Move(Origin, 1, null, null))
                 {
                     var mob = new Mob();
-                    mob.StartWandering();
                     RougeBoyGame.S.Grid.Move(Origin, 1, mob, null);
                     RougeBoyGame.S.MapElements.Add(mob);
+                    mob.StartWandering();
                 }
                 else
                 {
                     Debug.Log(Origin + " is in use");
                 }
-                yield return TinyCoro.Wait(1f);
+                yield return TinyCoro.Wait(15f);
             }
         }
     }
