@@ -27,7 +27,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
             {
                 var parent = _open.Values.OrderBy(p => p.Cost + GetHeuristic(p.Point)).First();
                 _open.Remove(parent.Point);
-                Debug.Log("Look at " + i);
+                //LoggerCheap.Log("Look at " + i);
 
                 foreach (var dir in directions)
                 {
@@ -54,7 +54,9 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
                         if (neighbourKey.x >= 0 && neighbourKey.x < grid.Width
                             && neighbourKey.y >= 0 && neighbourKey.y < grid.Height)
                         {
-                            if(grid.Cells[neighbourKey.x, neighbourKey.y] == null)
+                            if(grid.Cells[neighbourKey.x, neighbourKey.y] == null
+                                || grid.Cells[neighbourKey.x, neighbourKey.y] is Mob
+                                || grid.Cells[neighbourKey.x, neighbourKey.y] is SlimeKing)
                             {
                                 _open.Add(new AStarNode(neighbourKey, parent.Cost + 1f, parent));
                             }
@@ -64,7 +66,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
 
                 _closed.Add(parent);
 
-                Debug.Log("Open " + _open.Values.Count + " Closed " + _closed.Values.Count);
+               // LoggerCheap.Log("Open " + _open.Values.Count + " Closed " + _closed.Values.Count);
 
                 if(parent.Point.Equals(_end))
                 {
@@ -73,7 +75,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
 
                     while(next != null)
                     {
-                        Debug.Log("Add to path " + next.Point);
+                        //LoggerCheap.Log("Add to path " + next.Point);
                         FinalPath.Add(next.Point);
                         next = next.Parent;
                     }
@@ -101,7 +103,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
             Point = point;
             Cost = cost;
             Parent = parent;
-            Debug.Log("Create node at " + point);
+            //LoggerCheap.Log("Create node at " + point);
         }
 
         public Vec2 Point;

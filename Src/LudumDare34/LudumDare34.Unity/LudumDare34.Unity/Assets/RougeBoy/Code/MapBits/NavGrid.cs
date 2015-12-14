@@ -10,46 +10,52 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
     {
         public const int CellBlockSize = 8;
         public MapElement[,] Cells;
+        //public Vec2[,] Path;
         public readonly int Width;
         public readonly int Height;
-        public NavGrid()
+        public NavGrid(int width, int height)
         {
-            Width = GameBoyScreen.Width / CellBlockSize;
-            Height = GameBoyScreen.Height / CellBlockSize;
+            Width = width;
+            Height = height;
             Cells = new MapElement[Width, Height];
+            //Path = new Vec2[Width, Height];
         }
 
-        public bool Move(Vec2 destPosition, int size, MapElement mapElement = null, Vec2? srcPosition = null)
+        public bool CanMoveTo(Vec2 destPosition, Vec2 size, MapElement mapElement = null)
         {
             var grid = this;
-
-            if (destPosition.x < 0 || destPosition.x + size > grid.Width
-                || destPosition.y < 0 || destPosition.y + size > grid.Height)
+            if (destPosition.x < 0 || destPosition.x + size.x > grid.Width
+                || destPosition.y < 0 || destPosition.y + size.y > grid.Height)
             {
-                Debug.Log("Out of bounds");
+                LoggerCheap.Log("Out of bounds");
                 return false;
             }
 
-            Debug.Log("Move");
-            for (int x = destPosition.x; x < destPosition.x + size; x++)
+            //LoggerCheap.Log("Move");
+            for (int x = destPosition.x; x < destPosition.x + size.x; x++)
             {
-                for (int y = destPosition.y; y < destPosition.y + size; y++)
+                for (int y = destPosition.y; y < destPosition.y + size.y; y++)
                 {
                     if (grid.Cells[x, y] != null && grid.Cells[x, y] != mapElement)
                     {
                         //Something else is in the way
-                        Debug.Log("Something in way");
+                        LoggerCheap.Log("Something in way");
                         return false;
                     }
                 }
             }
+            return true;
+        }
 
+        public void Remove(Vec2 size, MapElement mapElement, Vec2? srcPosition = null)
+        {
+            var grid = this;
             //Clear old pos
             if (mapElement != null && srcPosition.HasValue)
             {
-                for (int x = srcPosition.Value.x; x < srcPosition.Value.x + size; x++)
+                for (int x = srcPosition.Value.x; x < srcPosition.Value.x + size.x; x++)
                 {
-                    for (int y = srcPosition.Value.y; y < srcPosition.Value.y + size; y++)
+                    for (int y = srcPosition.Value.y; y < srcPosition.Value.y + size.y; y++)
                     {
                         if (grid.Cells[x, y] == mapElement)
                         {
@@ -58,12 +64,25 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
                     }
                 }
             }
+        }
+
+        public bool Move(Vec2 destPosition, Vec2 size, MapElement mapElement, Vec2? srcPosition = null)
+        {
+            var grid = this;
+            
+            if(!CanMoveTo(destPosition, size, mapElement))
+            {
+                return false;
+            }
+
+            Remove(size, mapElement, srcPosition);
+
             if (mapElement != null)
             { 
-                    //Set new pos
-                for (int x = destPosition.x; x < destPosition.x + size; x++)
+                //Set new pos
+                for (int x = destPosition.x; x < destPosition.x + size.x; x++)
                 {
-                    for (int y = destPosition.y; y < destPosition.y + size; y++)
+                    for (int y = destPosition.y; y < destPosition.y + size.y; y++)
                     {
                         grid.Cells[x, y] = mapElement;
                     }

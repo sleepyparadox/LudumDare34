@@ -19,7 +19,7 @@ namespace uSquid.Editor
         {
             var assetsDirectory = uSquidUtility.CleanPath(Application.dataPath);
 
-            Debug.Log(assetsDirectory);
+            LoggerCheap.Log(assetsDirectory);
 
             var assetTreeBuilder = new AssetTreeBuilder();
             assetTreeBuilder.AppendUnityProjectAssets(staticClassName: StaticClassName);
@@ -115,7 +115,7 @@ namespace uSquid.Editor
             if (overrideChildren != null)
                 childDirectories = overrideChildren;
 
-            //Debug.LogWarning(string.Format("Writing for {0}, {1} files, {2} children", directory.Name, files.Keys.Count, childDirectories.Keys.Count));
+            //LoggerCheap.LogWarning(string.Format("Writing for {0}, {1} files, {2} children", directory.Name, files.Keys.Count, childDirectories.Keys.Count));
             var assets = new List<string>();
 
             AppendLine(string.Format("public class {0}Node : IDirectoryNode", safeName));

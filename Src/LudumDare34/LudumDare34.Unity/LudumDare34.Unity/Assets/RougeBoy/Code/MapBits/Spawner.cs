@@ -7,32 +7,29 @@ using UnityEngine;
 
 namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
 {
-    public class Spawner : Sprite
+    public class Spawner : MapElement
     {
+        public Vec2 MoveToPos;
         public Spawner()
-            : base(MyAssets.Resources.RougeBoy.Materials.Mob.mat.Clone())
+            : base(MyAssets.Resources.RougeBoy.Materials.Mob.mat.Clone(), Vec2.One)
         {
-            Origin = new Vec2(0, RougeBoyGame.S.Grid.Height - 2);
-            TinyCoro.SpawnNext(DoSpawning);
+            GameObject.SetActive(false);
         }
 
-        public IEnumerator DoSpawning()
+        int iTurn = 0;
+        public override void PerformTurn()
         {
-            //while (true)
+            if(iTurn % 8 == 0)
             {
-                if (RougeBoyGame.S.Grid.Move(Origin, 1, null, null))
+                if (RougeBoyGame.S.Grid.CanMoveTo(Origin, Vec2.One))
                 {
                     var mob = new Mob();
-                    RougeBoyGame.S.Grid.Move(Origin, 1, mob, null);
-                    RougeBoyGame.S.MapElements.Add(mob);
-                    mob.StartWandering();
+                    mob.MoveToPos = MoveToPos;
+                    mob.WorldPosition = this.WorldPosition;
+                    RougeBoyGame.S.Grid.Move(Origin, Vec2.One, mob, null);
                 }
-                else
-                {
-                    Debug.Log(Origin + " is in use");
-                }
-                yield return TinyCoro.Wait(15f);
             }
+            iTurn++;
         }
     }
 }

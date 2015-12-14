@@ -22,7 +22,7 @@ public partial class TinyCoro
             index = _allCoros.IndexOf(Current) + 1;
         _allCoros.Insert(index, coro);
 
-        Debug.Log(coro + " created at index " + index);
+        LoggerCheap.Log(coro + " created at index " + index);
         return coro;
     }
 

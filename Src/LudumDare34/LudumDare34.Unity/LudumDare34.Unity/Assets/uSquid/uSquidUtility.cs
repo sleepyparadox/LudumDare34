@@ -123,7 +123,7 @@ namespace UnityEngine
                     return child;
             }
 
-            Debug.LogWarning(string.Format("Couldn't find child \"{0}\" of parent \"{1}\"", childName, parent.name));
+            LoggerCheap.LogWarning(string.Format("Couldn't find child \"{0}\" of parent \"{1}\"", childName, parent.name));
             return null;
         }
     }
@@ -169,7 +169,7 @@ namespace uSquid
         }
 
         static char[] Numbers = "1234567890".ToCharArray();
-        static char[] AllowedClassCharacters = "ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz1234567890_".ToCharArray();
+        static char[] AllowedClassCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_".ToCharArray();
         static string[] CSharpKeyWords = new string[]
         {
             "abstract",

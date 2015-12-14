@@ -30,11 +30,11 @@ namespace uSquid.Assets
 
         public static T Load<T>(string assetPath) where T : UnityEngine.Object
         {
-            Debug.Log("Loading: " + assetPath);
+            LoggerCheap.Log("Loading: " + assetPath);
 
             if (HasLoaded(assetPath))
             {
-                Debug.Log("Aready loaded: " + assetPath);
+                LoggerCheap.Log("Aready loaded: " + assetPath);
                 return (T)_instance._loadedAssets[assetPath];
             }
 
@@ -60,7 +60,7 @@ namespace uSquid.Assets
                 }
                 
                 
-                Debug.Log("From resources: " + assetPathInsideResources);
+                LoggerCheap.Log("From resources: " + assetPathInsideResources);
                 var asset = Resources.Load<T>(assetPathInsideResources);
                 _instance._loadedAssets.Add(assetPath, asset);
                 return asset;

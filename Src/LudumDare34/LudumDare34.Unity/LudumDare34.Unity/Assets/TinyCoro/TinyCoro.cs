@@ -13,7 +13,7 @@ public partial class TinyCoro
     {
         if (!Alive)
             return;
-        Debug.Log(this + " are kill " + TinyCoroFinishReason.Killed);
+        LoggerCheap.Log(this + " are kill " + TinyCoroFinishReason.Killed);
         if (OnFinished != null)
             OnFinished(this, TinyCoroFinishReason.Killed);
         Alive = false;
@@ -59,7 +59,7 @@ public partial class TinyCoro
         {
             // Executed final block of code
             Alive = false;
-            Debug.Log(this + " are kill " + TinyCoroFinishReason.Finished);
+            LoggerCheap.Log(this + " are kill " + TinyCoroFinishReason.Finished);
             if (OnFinished != null)
                 OnFinished(this, TinyCoroFinishReason.Finished);
         }

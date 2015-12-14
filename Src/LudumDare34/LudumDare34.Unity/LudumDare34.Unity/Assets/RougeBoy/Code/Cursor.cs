@@ -10,81 +10,98 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
     public class Cursor : Sprite
     {
         public Cursor()
-            : base(MyAssets.Resources.RougeBoy.Materials.Cursor.mat.Clone(), 2)
+            : base(MyAssets.Resources.RougeBoy.Materials.Cursor.mat.Clone(), Vec2.Two)
         {
-            Origin = new Vec2(GameBoyScreen.Width / NavGrid.CellBlockSize / 2, GameBoyScreen.Height / NavGrid.CellBlockSize / 2);
+            Origin = new Vec2((GBScreen.Width / NavGrid.CellBlockSize / 2) - 1, (GBScreen.Height / NavGrid.CellBlockSize / 2) - 1);
+            _inputs = new InputAxis[]
+            {
+                new InputAxis(new Vec2(-1, 0), KeyCode.LeftArrow, KeyCode.A),
+                new InputAxis(new Vec2(1, 0), KeyCode.RightArrow, KeyCode.D),
+                new InputAxis(new Vec2(0, 1), KeyCode.UpArrow, KeyCode.W),
+                new InputAxis(new Vec2(0, -1), KeyCode.DownArrow, KeyCode.S),
+            };
+
+            var camera = GameObject.Find("Camera");
+            camera.transform.parent = Transform;
             TinyCoro.SpawnNext(DoCursor);
         }
 
-        float _leftDuration;
-        float _rightDuration;
-        float _upDuration;
-        float _downDuration;
 
         const float _moveAfter = 0.25f;
+        private InputAxis[] _inputs;
 
         public IEnumerator DoCursor()
         {
             while(true)
             {
-                if(_leftDuration >= _moveAfter || (_leftDuration < _moveAfter && (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))) )
+                foreach(var input in _inputs)
                 {
-                    Origin = new Vec2(Origin.x - 1, Origin.y);
-                    _leftDuration -= _moveAfter;
+                    Origin += input.MovementThisFrame;
                 }
 
-                if (_rightDuration >= _moveAfter || (_rightDuration < _moveAfter && (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightAlt))))
+                if(Input.GetKeyDown(KeyCode.Z))
                 {
-                    Origin = new Vec2(Origin.x + 1, Origin.y);
-                    _rightDuration -= _moveAfter;
-                }
-
-                if (_upDuration >= _moveAfter || (_upDuration < _moveAfter && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))))
-                {
-                    Origin = new Vec2(Origin.x, Origin.y + 1);
-                    _upDuration -= _moveAfter;
-                }
-
-                if (_downDuration >= _moveAfter || (_downDuration < _moveAfter && (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))))
-                {
-                    Origin = new Vec2(Origin.x, Origin.y - 1);
-                    _downDuration -= _moveAfter;
-                }
-
-
-                _leftDuration = Input.GetAxis("Horizontal") < 0 ? _leftDuration + Time.deltaTime : 0f;
-                _rightDuration = Input.GetAxis("Horizontal") > 0 ? _rightDuration + Time.deltaTime : 0f;
-                _upDuration = Input.GetAxis("Vertical") > 0 ? _upDuration + Time.deltaTime : 0f;
-                _downDuration = Input.GetAxis("Vertical") < 0 ? _downDuration + Time.deltaTime : 0f;
-
-
-                if(Input.GetKeyUp(KeyCode.X))
-                {
-                    var tower = new SlimeTower();
-                    if(tower.Move(Origin))
+                    if(RougeBoyGame.S.Grid.Move(Origin, Vec2.Two, null, null))
                     {
-                        RougeBoyGame.S.MapElements.Add(tower);
+                        var tower = new SlimeTower();
+                        RougeBoyGame.S.Grid.Move(Origin, tower.Size, tower, null);
                     }
-                    else
-                    {
-                        //Not optimized but jam
-                        tower.Destroy();
-                    }
+                }
 
-                    for (int x = 0; x < RougeBoyGame.S.Grid.Width; x++)
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    RougeBoyGame.S.Paused = !RougeBoyGame.S.Paused;
+                }
+
+                if (Input.GetKeyDown(KeyCode.O))
+                {
+                    RougeBoyGame.S.PerformTurn();
+                }
+
+                if (Input.GetKeyDown(KeyCode.I))
+                {
+                    var log = "";
+                    for (int y = 0; y < RougeBoyGame.S.Grid.Height; y++)
                     {
-                        for (int y = 0; y < RougeBoyGame.S.Grid.Height; y++)
+                        for (int x = 0; x < RougeBoyGame.S.Grid.Width; x++)
                         {
                             var cell = RougeBoyGame.S.Grid.Cells[x, y];
-                            Debug.Log(x + ", " + y + " is " + (cell == null ? "null" : cell.GetHashCode().ToString()));
+                            if(cell == null)
+                            {
+                                log += "null,";
+                            }
+                            else
+                            {
+                                log += cell.GetType().Name + " (" + cell.GetHashCode() + "),";
+                            }
                         }
+                        log += Environment.NewLine;
                     }
+                    LoggerCheap.Log(log);
                 }
 
-                
                 yield return null;
             }
             
+        }
+
+        public class InputAxis
+        {
+            public Vec2 MovementThisFrame
+            {
+                get
+                {
+                    return _keys.Any(key => Input.GetKeyUp(key)) ? _direction : Vec2.Zero;
+                }
+            }
+            private Vec2 _direction;
+            private KeyCode[] _keys;
+
+            public InputAxis(Vec2 direction, params KeyCode[] keys)
+            {
+                _direction = direction;
+                _keys = keys;
+            }
         }
     }
 }
