@@ -16,10 +16,10 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
             GameObject.SetActive(false);
         }
 
-        int iTurn = 0;
         public override void PerformTurn()
         {
-            if(iTurn % 8 == 0)
+            if(RougeBoyGame.S.Turn % 2 == 0
+                && RougeBoyGame.S.Turn <= 14)
             {
                 if (RougeBoyGame.S.Grid.CanMoveTo(Origin, Vec2.One))
                 {
@@ -29,7 +29,6 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code.MapBits
                     RougeBoyGame.S.Grid.Move(Origin, Vec2.One, mob, null);
                 }
             }
-            iTurn++;
         }
     }
 }

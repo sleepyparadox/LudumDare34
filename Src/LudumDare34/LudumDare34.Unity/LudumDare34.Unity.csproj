@@ -63,6 +63,7 @@
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\MapBits\SlimeKing.cs" />
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\MapBits\Spawner.cs" />
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\MapBits\Wall.cs" />
+    <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\Popup.cs" />
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\RougeBoyGame.cs" />
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\MapBits\SlimeTower.cs" />
     <Compile Include="LudumDare34.Unity\Assets\RougeBoy\Code\MapBits\Sprite.cs" />

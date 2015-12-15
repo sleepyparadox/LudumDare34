@@ -29,6 +29,8 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
 
         private void SpriteAnimate(UnityObject uObj)
         {
+            if (IsDestroyed)
+                return;
             var frame = (int)((Time.time * 6) % 2);
             _quadRenderer.material.mainTextureOffset = new Vector2(frame * 0.5f, 0f);
         }

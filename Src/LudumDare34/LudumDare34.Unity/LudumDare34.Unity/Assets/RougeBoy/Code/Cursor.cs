@@ -39,12 +39,41 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
                     Origin += input.MovementThisFrame;
                 }
 
-                if(Input.GetKeyDown(KeyCode.Z))
+                if(Input.GetKeyDown(KeyCode.Z) && RougeBoyGame.S.Popups == 0)
                 {
-                    if(RougeBoyGame.S.Grid.Move(Origin, Vec2.Two, null, null))
+                    if(RougeBoyGame.S.SlimesRemain >= 1)
                     {
-                        var tower = new SlimeTower();
-                        RougeBoyGame.S.Grid.Move(Origin, tower.Size, tower, null);
+                        if (RougeBoyGame.S.Grid.Move(Origin, Vec2.Two, null, null))
+                        {
+                            var tower = new SlimeTower();
+                            RougeBoyGame.S.Grid.Move(Origin, tower.Size, tower, null);
+                            RougeBoyGame.S.SlimesRemain--;
+                        }
+                    }
+                    else
+                    {
+                        new Popup("Not enough slime!");
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.X) && RougeBoyGame.S.Popups == 0)
+                {
+                    var towersToRemove = new List<MapElement>();
+                    
+                    for (int x = Math.Max(Origin.x, 0); x < Math.Min(Origin.x + Size.x, RougeBoyGame.S.Grid.Width - 1); x++)
+                    {
+                        for (int y = Math.Max(Origin.y, 0); y < Math.Min(Origin.y + Size.y, RougeBoyGame.S.Grid.Height - 1); y++)
+                        {
+                            if (RougeBoyGame.S.Grid.Cells[x, y] != null
+                                && RougeBoyGame.S.Grid.Cells[x, y] is SlimeTower)
+                            {
+                                towersToRemove.Add(RougeBoyGame.S.Grid.Cells[x, y]);
+                            }
+                        }
+                    }
+                    foreach(var tower in towersToRemove.Distinct())
+                    {
+                        tower.Destroy();
+                        RougeBoyGame.S.SlimesRemain++;
                     }
                 }
 

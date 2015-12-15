@@ -8,7 +8,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
     public class SlimeTower : MapElement
     {
         private MapElement _closetMob;
-        public int _range = 24;
+        public int _range = 28;
 
         public SlimeTower()
             : base(MyAssets.Resources.RougeBoy.Materials.Slime.mat.Clone(), Vec2.Two, true)

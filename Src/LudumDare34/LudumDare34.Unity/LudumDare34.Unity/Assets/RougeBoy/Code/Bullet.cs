@@ -49,7 +49,8 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
 
         public override void PerformTurn()
         {
-            if(_target.IsDestroyed)
+            if(_target.IsDestroyed
+                || _source.IsDestroyed)
             {
                 Destroy();
                 return;
@@ -64,7 +65,7 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
 
             if (_steps > _stepsToHit)
             {
-                Debug.Log("Bullet Destroy");
+                //Debug.Log("Bullet Destroy");
                 Destroy();
                 (_target as Mob).Health -= 1;
                 return;

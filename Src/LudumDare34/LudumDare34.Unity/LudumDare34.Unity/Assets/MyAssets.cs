@@ -3,7 +3,7 @@
 /// GENERAGED CODE 
 /// ANY CHANGES YOU MAKE WILL PROBABLY BE LOST
 /// 
-/// This code file was generated at 12/15/2015 8:17:44 AM 
+/// This code file was generated at 12/15/2015 10:32:13 AM 
 /// using the open source kit uSquid https://github.com/sleepyparadox/uSquid
 /// 
 /// </summary>
@@ -24,16 +24,37 @@ public class MyAssetsNode : IDirectoryNode
 	{
 		public string Name { get { return "Resources"; } }
 		public string Path { get { return "Resources"; } }
+		public FontsNode Fonts = new FontsNode();
 		public RougeBoyNode RougeBoy = new RougeBoyNode();
+		public class FontsNode : IDirectoryNode
+		{
+			public string Name { get { return "Fonts"; } }
+			public string Path { get { return "Resources/Fonts"; } }
+			public SF_PixelateNode SF_Pixelate = new SF_PixelateNode();
+			public class SF_PixelateNode : IAssetNode
+			{
+				public Asset<UnityEngine.Font> ttf = new Asset<UnityEngine.Font>("SF Pixelate.ttf", "Resources/Fonts/SF Pixelate.ttf");
+				public Asset[] GetAssets() { return new Asset[] { ttf }; }
+			}
+			public Asset[] GetAssets() { return new Asset[] { SF_Pixelate.ttf }; }
+			public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { SF_Pixelate }; }
+			public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] {  }; }
+		}
 		public class RougeBoyNode : IDirectoryNode
 		{
 			public string Name { get { return "RougeBoy"; } }
 			public string Path { get { return "Resources/RougeBoy"; } }
+			public PopupNode Popup = new PopupNode();
 			public SpriteNode Sprite = new SpriteNode();
 			public MaterialsNode Materials = new MaterialsNode();
 			public MaterialsColorsNode MaterialsColors = new MaterialsColorsNode();
 			public SFXNode SFX = new SFXNode();
 			public TexturesNode Textures = new TexturesNode();
+			public class PopupNode : IAssetNode
+			{
+				public Asset<UnityEngine.GameObject> prefab = new Asset<UnityEngine.GameObject>("Popup.prefab", "Resources/RougeBoy/Popup.prefab");
+				public Asset[] GetAssets() { return new Asset[] { prefab }; }
+			}
 			public class SpriteNode : IAssetNode
 			{
 				public Asset<UnityEngine.GameObject> prefab = new Asset<UnityEngine.GameObject>("Sprite.prefab", "Resources/RougeBoy/Sprite.prefab");
@@ -50,7 +71,9 @@ public class MyAssetsNode : IDirectoryNode
 				public MapFloorx10Node MapFloorx10 = new MapFloorx10Node();
 				public MobNode Mob = new MobNode();
 				public NavTileNode NavTile = new NavTileNode();
+				public PopupBarNode PopupBar = new PopupBarNode();
 				public SlimeNode Slime = new SlimeNode();
+				public UIBarNode UIBar = new UIBarNode();
 				public WallDNode WallD = new WallDNode();
 				public WallDLNode WallDL = new WallDLNode();
 				public WallDRNode WallDR = new WallDRNode();
@@ -98,9 +121,19 @@ public class MyAssetsNode : IDirectoryNode
 					public Asset<UnityEngine.Material> mat = new Asset<UnityEngine.Material>("NavTile.mat", "Resources/RougeBoy/Materials/NavTile.mat");
 					public Asset[] GetAssets() { return new Asset[] { mat }; }
 				}
+				public class PopupBarNode : IAssetNode
+				{
+					public Asset<UnityEngine.Material> mat = new Asset<UnityEngine.Material>("PopupBar.mat", "Resources/RougeBoy/Materials/PopupBar.mat");
+					public Asset[] GetAssets() { return new Asset[] { mat }; }
+				}
 				public class SlimeNode : IAssetNode
 				{
 					public Asset<UnityEngine.Material> mat = new Asset<UnityEngine.Material>("Slime.mat", "Resources/RougeBoy/Materials/Slime.mat");
+					public Asset[] GetAssets() { return new Asset[] { mat }; }
+				}
+				public class UIBarNode : IAssetNode
+				{
+					public Asset<UnityEngine.Material> mat = new Asset<UnityEngine.Material>("UIBar.mat", "Resources/RougeBoy/Materials/UIBar.mat");
 					public Asset[] GetAssets() { return new Asset[] { mat }; }
 				}
 				public class WallDNode : IAssetNode
@@ -163,8 +196,8 @@ public class MyAssetsNode : IDirectoryNode
 					public Asset<UnityEngine.Material> mat = new Asset<UnityEngine.Material>("WallUR.mat", "Resources/RougeBoy/Materials/WallUR.mat");
 					public Asset[] GetAssets() { return new Asset[] { mat }; }
 				}
-				public Asset[] GetAssets() { return new Asset[] { _DTexture.mat, Bullet.mat, Cursor.mat, KingSlime.mat, MapFloorx10.mat, Mob.mat, NavTile.mat, Slime.mat, WallD.mat, WallDL.mat, WallDR.mat, WallHalfD.mat, WallHalfL.mat, WallHalfR.mat, WallHalfU.mat, WallL.mat, WallR.mat, WallU.mat, WallUL.mat, WallUR.mat }; }
-				public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { _DTexture, Bullet, Cursor, KingSlime, MapFloorx10, Mob, NavTile, Slime, WallD, WallDL, WallDR, WallHalfD, WallHalfL, WallHalfR, WallHalfU, WallL, WallR, WallU, WallUL, WallUR }; }
+				public Asset[] GetAssets() { return new Asset[] { _DTexture.mat, Bullet.mat, Cursor.mat, KingSlime.mat, MapFloorx10.mat, Mob.mat, NavTile.mat, PopupBar.mat, Slime.mat, UIBar.mat, WallD.mat, WallDL.mat, WallDR.mat, WallHalfD.mat, WallHalfL.mat, WallHalfR.mat, WallHalfU.mat, WallL.mat, WallR.mat, WallU.mat, WallUL.mat, WallUR.mat }; }
+				public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { _DTexture, Bullet, Cursor, KingSlime, MapFloorx10, Mob, NavTile, PopupBar, Slime, UIBar, WallD, WallDL, WallDR, WallHalfD, WallHalfL, WallHalfR, WallHalfU, WallL, WallR, WallU, WallUL, WallUR }; }
 				public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] {  }; }
 			}
 			public class MaterialsColorsNode : IDirectoryNode
@@ -214,7 +247,10 @@ public class MyAssetsNode : IDirectoryNode
 				public MapFloorNode MapFloor = new MapFloorNode();
 				public MobNode Mob = new MobNode();
 				public NavTileNode NavTile = new NavTileNode();
+				public PopupBarNode PopupBar = new PopupBarNode();
 				public SlimeNode Slime = new SlimeNode();
+				public SplashScreenNode SplashScreen = new SplashScreenNode();
+				public UIBarNode UIBar = new UIBarNode();
 				public WallDNode WallD = new WallDNode();
 				public WallDLNode WallDL = new WallDLNode();
 				public WallDRNode WallDR = new WallDRNode();
@@ -267,9 +303,24 @@ public class MyAssetsNode : IDirectoryNode
 					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("NavTile.png", "Resources/RougeBoy/Textures/NavTile.png");
 					public Asset[] GetAssets() { return new Asset[] { png }; }
 				}
+				public class PopupBarNode : IAssetNode
+				{
+					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("PopupBar.png", "Resources/RougeBoy/Textures/PopupBar.png");
+					public Asset[] GetAssets() { return new Asset[] { png }; }
+				}
 				public class SlimeNode : IAssetNode
 				{
 					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("Slime.png", "Resources/RougeBoy/Textures/Slime.png");
+					public Asset[] GetAssets() { return new Asset[] { png }; }
+				}
+				public class SplashScreenNode : IAssetNode
+				{
+					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("SplashScreen.png", "Resources/RougeBoy/Textures/SplashScreen.png");
+					public Asset[] GetAssets() { return new Asset[] { png }; }
+				}
+				public class UIBarNode : IAssetNode
+				{
+					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("UIBar.png", "Resources/RougeBoy/Textures/UIBar.png");
 					public Asset[] GetAssets() { return new Asset[] { png }; }
 				}
 				public class WallDNode : IAssetNode
@@ -332,17 +383,17 @@ public class MyAssetsNode : IDirectoryNode
 					public Asset<UnityEngine.Texture2D> png = new Asset<UnityEngine.Texture2D>("WallUR.png", "Resources/RougeBoy/Textures/WallUR.png");
 					public Asset[] GetAssets() { return new Asset[] { png }; }
 				}
-				public Asset[] GetAssets() { return new Asset[] { _DTexture.renderTexture, Bullet.png, Cursor.png, KingSlime.png, MapFloor.png, Mob.png, NavTile.png, Slime.png, WallD.png, WallDL.png, WallDR.png, WallHalfD.png, WallHalfL.png, WallHalfR.png, WallHalfU.png, WallL.png, WallR.png, WallU.png, WallUL.png, WallUR.png }; }
-				public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { _DTexture, Art___Shortcut, Bullet, Cursor, KingSlime, MapFloor, Mob, NavTile, Slime, WallD, WallDL, WallDR, WallHalfD, WallHalfL, WallHalfR, WallHalfU, WallL, WallR, WallU, WallUL, WallUR }; }
+				public Asset[] GetAssets() { return new Asset[] { _DTexture.renderTexture, Bullet.png, Cursor.png, KingSlime.png, MapFloor.png, Mob.png, NavTile.png, PopupBar.png, Slime.png, SplashScreen.png, UIBar.png, WallD.png, WallDL.png, WallDR.png, WallHalfD.png, WallHalfL.png, WallHalfR.png, WallHalfU.png, WallL.png, WallR.png, WallU.png, WallUL.png, WallUR.png }; }
+				public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { _DTexture, Art___Shortcut, Bullet, Cursor, KingSlime, MapFloor, Mob, NavTile, PopupBar, Slime, SplashScreen, UIBar, WallD, WallDL, WallDR, WallHalfD, WallHalfL, WallHalfR, WallHalfU, WallL, WallR, WallU, WallUL, WallUR }; }
 				public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] {  }; }
 			}
-			public Asset[] GetAssets() { return new Asset[] { Sprite.prefab }; }
-			public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { Sprite }; }
+			public Asset[] GetAssets() { return new Asset[] { Popup.prefab, Sprite.prefab }; }
+			public IAssetNode[] GetAssetNodes() { return new IAssetNode[] { Popup, Sprite }; }
 			public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] { Materials, MaterialsColors, SFX, Textures }; }
 		}
 		public Asset[] GetAssets() { return new Asset[] {  }; }
 		public IAssetNode[] GetAssetNodes() { return new IAssetNode[] {  }; }
-		public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] { RougeBoy }; }
+		public IDirectoryNode[] GetDirectories() { return new IDirectoryNode[] { Fonts, RougeBoy }; }
 	}
 	public Asset[] GetAssets() { return new Asset[] {  }; }
 	public IAssetNode[] GetAssetNodes() { return new IAssetNode[] {  }; }

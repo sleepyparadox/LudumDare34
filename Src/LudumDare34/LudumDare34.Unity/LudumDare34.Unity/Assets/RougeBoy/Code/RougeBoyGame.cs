@@ -11,10 +11,18 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
     public class RougeBoyGame
     {
         public static RougeBoyGame S;
+        public float SlimesRemain = 3f;
+        public int Lives = 15;
+        public int WaveId = 1;
+
         public bool Paused;
         public NavGrid Grid;
         public List<MapElement> MapElements = new List<MapElement>();
-        float _timePerTurn = 0.16f;
+        float _minTimePerTurn = 0.25f;
+        public int Popups;
+
+        public int Turn = 0;
+        int finalWave = 60;
 
         public RougeBoyGame()
         {
@@ -89,18 +97,66 @@ namespace LudumDare34.Unity.LudumDare34.Unity.Assets.RougeBoy.Code
             var wallDR = Wall.DownRight;
             Grid.Move(new Vec2(0, Grid.Height - 3), wallDR.Size, wallDR);
 
+            var slimesText = GameObject.Find("SlimesText").GetComponent<TextMesh>();
+            var livesText = GameObject.Find("LivesText").GetComponent<TextMesh>();
+            var waveText = GameObject.Find("WaveText").GetComponent<TextMesh>();
+
             var elapsed = 0f;
             while (true)
             {
-                if(!Paused)
+                slimesText.text = Math.Min((int)SlimesRemain, 99).ToString();
+                livesText.text = Math.Min((int)Lives, 99).ToString();
+                waveText.text = "Wave " + WaveId;
+
+                if(Lives <= 0)
+                {
+                    var kingDeadPop = new Popup("Kings are dead");
+                    yield return TinyCoro.WaitUntil(() => kingDeadPop.IsDestroyed);
+
+                    var gameOverPop = new Popup("Game Over");
+                    yield return TinyCoro.WaitUntil(() => gameOverPop.IsDestroyed);
+
+                    foreach(var coro in TinyCoro.AllCoroutines)
+                    {
+                        coro.Kill();
+                    }
+                    Application.LoadLevel(Application.loadedLevel);
+                    yield break;
+                }
+                if(Turn >= finalWave
+                    && !MapElements.Any(e => e is Mob))
+                {
+                    var wave60Pop = new Popup("Wave 60 complete");
+                    yield return TinyCoro.WaitUntil(() => wave60Pop.IsDestroyed);
+
+                    var winPop = new Popup("You win!");
+                    yield return TinyCoro.WaitUntil(() => winPop.IsDestroyed);
+
+                    foreach (var coro in TinyCoro.AllCoroutines)
+                    {
+                        coro.Kill();
+                    }
+                    Application.LoadLevel(Application.loadedLevel);
+                    yield break;
+                }
+
+                if (!Paused && RougeBoyGame.S.Popups == 0)
                 {
                     elapsed += Time.deltaTime;
                 }
 
-                if(elapsed >= _timePerTurn)
+                var timePerTurn = _minTimePerTurn * Math.Max(1f, 5f - (WaveId / 2f));
+                if(elapsed >= timePerTurn)
                 {
-                    elapsed -= _timePerTurn;
+                    elapsed -= timePerTurn;
                     PerformTurn();
+
+                    Turn++;
+                    if (Turn > 20 && Turn <= finalWave)
+                    {
+                        WaveId++;
+                        Turn = 0;
+                    }
                 }
 
                 yield return null;
